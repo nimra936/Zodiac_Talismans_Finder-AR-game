@@ -130,14 +130,14 @@ function applyGlow(entity, color, key) {
                 let intensity = mesh.material.emissiveIntensity;
                 
                 // 3. Pulse the color intensity to make the carving look "alive"
-                intensity = up ? intensity + 0.02 : intensity - 0.02;
+                intensity = up ? intensity + 0.01 : intensity - 0.01;
                 
                 // 4. Set the limits: 0.8 is bright color, 0.2 is faint color
-                if (intensity >= 0.8) up = false;
+                if (intensity >= 0.6) up = false;
                 if (intensity <= 0.2) up = true;
                 
                 mesh.material.emissiveIntensity = intensity;
-            }, 80); // Slightly faster pulse for better effect
+            }, 100); // Slightly faster pulse for better effect
         }
     });
 }
