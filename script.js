@@ -80,30 +80,25 @@ function applyGlow(entity, color, key) {
 
     entity.object3D.traverse(mesh => {
         if (mesh.isMesh) {
-            // 1. Apply the specific color from your ARTIFACTS list
+            // Apply the color glow but keep it transparent enough to see the stone
             mesh.material.emissive = new THREE.Color(color);
+            mesh.material.emissiveIntensity = 0.1; 
             
-            // 2. Increase base intensity so the color is actually visible
-            mesh.material.emissiveIntensity = 0.5; 
-            
-            mesh.material.needsUpdate = true;
-
             let up = true;
             glowIntervals[key] = setInterval(() => {
                 let intensity = mesh.material.emissiveIntensity;
-                
-                // 3. Pulse the color intensity to make the carving look "alive"
                 intensity = up ? intensity + 0.01 : intensity - 0.01;
                 
-                // 4. Set the limits: 0.8 is bright color, 0.2 is faint color
+                // CRITICAL: Max 0.3 ensures it stays grey/colored and NOT white
                 if (intensity >= 0.3) up = false;
-                if (intensity <= 0.5) up = true;
+                if (intensity <= 0.05) up = true;
                 
                 mesh.material.emissiveIntensity = intensity;
-            }, 100); // Slightly faster pulse for better effect
+            }, 100);
         }
     });
 }
+
 
 function removeGlow(key) {
     if (glowIntervals[key]) { clearInterval(glowIntervals[key]); delete glowIntervals[key]; }
