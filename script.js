@@ -18,13 +18,28 @@ const ARTIFACTS = {
     sheep: { name: "Sheep", power: "Astral Projection", color: 0x9999ff, markerId: "marker-sheep", entityId: "entity-sheep", quiz: { q: "Power of Sheep?", a: "Astral Projection", options: ["Healing", "Astral Projection", "Speed"] } }
 };
 
-function startGame() {
-    document.getElementById("start-screen").style.display = "none";
+//function startGame() {
+    //document.getElementById("start-screen").style.display = "none";
     // Mobile browsers require a user gesture to play audio/speech
-    const video = document.querySelector('video');
-    if (video) { video.play(); }
+    //const video = document.querySelector('video');
+    //if (video) { video.play(); }
     
-    speak("System Initialized. Scan a talisman.");
+    //speak("System Initialized. Scan a talisman.");
+//}
+
+function startGame() {
+    const startScreen = document.getElementById("start-screen");
+    startScreen.style.opacity = "0";
+    setTimeout(() => { 
+        startScreen.style.display = "none"; 
+    }, 500); // Fades out then removes
+
+    const video = document.querySelector('video');
+    if (video) {
+        video.style.display = "block"; // Force visibility
+        video.play();
+    }
+    speak("System Online.");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
