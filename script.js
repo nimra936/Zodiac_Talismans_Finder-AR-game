@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         marker.addEventListener("markerFound", () => {
             currentArtifact = key;
             const entity = document.getElementById(data.entityId);
+            activeEntity = entity;
             applyGlow(entity, data.color, key);
             playScanSound();
             registerCollection(key);
@@ -89,8 +90,39 @@ window.startQuiz = function() {
     });
 };
 
+//window.triggerVoiceInfo = function() {
+    //if (currentArtifact) speak(`${ARTIFACTS[currentArtifact].name} Talisman. Power: ${ARTIFACTS[currentArtifact].power}`);
+//};
+
 window.triggerVoiceInfo = function() {
-    if (currentArtifact) speak(`${ARTIFACTS[currentArtifact].name} Talisman. Power: ${ARTIFACTS[currentArtifact].power}`);
+    if (currentArtifact) {
+        speak(`${ARTIFACTS[currentArtifact].name}. Power: ${ARTIFACTS[currentArtifact].power}`);
+    } else {
+        alert("Scan a talisman first!");
+    }
+};
+
+window.toggleRotation = function() {
+    if (!activeEntity) return alert("No talisman detected!");
+    isRotating = !isRotating;
+    if (isRotating) {
+        // Starts rotation
+        activeEntity.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear');
+    } else {
+        // Stops rotation
+        activeEntity.removeAttribute('animation');
+    }
+};
+
+window.toggleXray = function() {
+    if (!activeEntity) return alert("No talisman detected!");
+    isXray = !isXray;
+    activeEntity.object3D.traverse(node => {
+        if (node.isMesh) {
+            node.material.transparent = true;
+            node.material.opacity = isXray ? 0.3 : 1.0; // 0.3 makes it "ghostly"
+        }
+    });
 };
 
 function speak(t) {
