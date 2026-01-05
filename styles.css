@@ -121,3 +121,23 @@ html, body {
 }
 
 .hidden { display: none !important; }
+
+/* FORCE CAMERA TO STAY VISIBLE */
+video {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+  z-index: -2 !important;
+}
+
+.a-canvas {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -1 !important;
+}
