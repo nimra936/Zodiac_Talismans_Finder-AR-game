@@ -18,38 +18,6 @@ const ARTIFACTS = {
     sheep: { name: "Sheep", power: "Astral Projection", color: 0x9999ff, markerId: "marker-sheep", entityId: "entity-sheep", quiz: { q: "Power of Sheep?", a: "Astral Projection", options: ["Healing", "Astral Projection", "Speed"] } }
 };
 
-// Ensure this goes AFTER your ARTIFACTS constant is defined
-function initializeMarkers() {
-    Object.keys(ARTIFACTS).forEach(key => {
-        const artifact = ARTIFACTS[key];
-        const marker = document.getElementById(artifact.markerId);
-
-        if (marker) {
-            // Logic for when ANY of the 8 markers is seen
-            marker.addEventListener('markerFound', () => {
-                currentArtifact = artifact;
-                activeEntity = document.getElementById(artifact.entityId);
-                
-                // This line pulls the unique color (0xff3300, 0x00ffcc, etc.) 
-                // from your list and "paints" the model
-                applyGlow(activeEntity, artifact.color, key);
-                
-                // Updates the UI with the specific power (Immortality, Fire, etc.)
-                updatePowerBar(artifact.power);
-                console.log("Active Artifact:", artifact.name);
-            });
-
-            // Logic for when the camera loses the marker
-            marker.addEventListener('markerLost', () => {
-                removeGlow(key);
-                if (currentArtifact && currentArtifact.markerId === artifact.markerId) {
-                    currentArtifact = null;
-                    activeEntity = null;
-                }
-            });
-        }
-    });
-}
 
 //function startGame() {
     //document.getElementById("start-screen").style.display = "none";
@@ -72,7 +40,7 @@ function startGame() {
         video.style.display = "block"; // Force visibility
         video.play();
     }
-    initializeMarkers();
+    //initializeMarkers();
     speak("System Online. Welcome to Zodiac AR");
 }
 
@@ -128,8 +96,8 @@ function applyGlow(entity, color, key) {
                 intensity = up ? intensity + 0.01 : intensity - 0.01;
                 
                 // 4. Set the limits: 0.8 is bright color, 0.2 is faint color
-                if (intensity >= 0.6) up = false;
-                if (intensity <= 0.2) up = true;
+                if (intensity >= 0.3) up = false;
+                if (intensity <= 0.5) up = true;
                 
                 mesh.material.emissiveIntensity = intensity;
             }, 100); // Slightly faster pulse for better effect
