@@ -78,11 +78,18 @@ function applyGlow(entity, color, key) {
     entity.object3D.traverse(mesh => {
         if (mesh.isMesh) {
             mesh.material.emissive = new THREE.Color(color);
+            mesh.material.emissiveIntensity = 0.2; // Keep it low to see the stone detail
+            mesh.material.needsUpdate = true;
             let up = true;
             glowIntervals[key] = setInterval(() => {
-                mesh.material.emissiveIntensity = (mesh.material.emissiveIntensity || 0.5) + (up ? 0.05 : -0.05);
-                if (mesh.material.emissiveIntensity >= 1.5) up = false;
-                if (mesh.material.emissiveIntensity <= 0.5) up = true;
+                //mesh.material.emissiveIntensity = (mesh.material.emissiveIntensity || 0.5) + (up ? 0.05 : -0.05);
+                //if (mesh.material.emissiveIntensity >= 1.5) up = false;
+                //if (mesh.material.emissiveIntensity <= 0.5) up = true;
+                let intensity = mesh.material.emissiveIntensity;
+                intensity = up ? intensity + 0.01 : intensity - 0.01;
+                if (intensity >= 0.5) up = false;
+                if (intensity <= 0.1) up = true;
+                mesh.material.emissiveIntensity = intensity;
             }, 100);
         }
     });
