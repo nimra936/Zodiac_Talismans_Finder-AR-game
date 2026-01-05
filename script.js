@@ -1,5 +1,8 @@
 // Global State
 let currentArtifact = null;
+let activeEntity = null;    // NEW: Remembers which 3D model is on screen
+let isRotating = false;     // NEW: Remembers if spinning is ON or OFF
+let isXray = false;         // NEW: Remembers if X-ray is ON or OFF
 let collected = new Set();
 const TOTAL_TALISMANS = 8;
 let glowIntervals = {};
@@ -18,6 +21,9 @@ const ARTIFACTS = {
 function startGame() {
     document.getElementById("start-screen").style.display = "none";
     // Mobile browsers require a user gesture to play audio/speech
+    const video = document.querySelector('video');
+    if (video) { video.play(); }
+    
     speak("System Initialized. Scan a talisman.");
 }
 
