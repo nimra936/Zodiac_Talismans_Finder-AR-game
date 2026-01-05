@@ -39,15 +39,21 @@
   </div>
 </div>
 
-<a-scene
+//a-scene
   //embedded
   //arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; trackingMethod: best;"
   //vr-mode-ui="enabled: false"
   //renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true;">
 
+  //a-scene 
+  //embedded 
+  arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; trackingMethod: best;" 
+  vr-mode-ui="enabled: false"
+  renderer="antialias: true; alpha: true; precision: medium; colorManagement: true;">
+
   <a-scene 
   embedded 
-  arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3; trackingMethod: best;" 
+  arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono; trackingMethod: best;" 
   vr-mode-ui="enabled: false"
   renderer="antialias: true; alpha: true; precision: medium; colorManagement: true;">
 
