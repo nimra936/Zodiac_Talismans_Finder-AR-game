@@ -1,8 +1,8 @@
 // Global State
 let currentArtifact = null;
-let activeEntity = null;    // NEW: Remembers which 3D model is on screen
-let isRotating = false;     // NEW: Remembers if spinning is ON or OFF
-let isXray = false;         // NEW: Remembers if X-ray is ON or OFF
+let activeEntity = null;
+let isRotating = false;
+let isXray = false;
 let collected = new Set();
 const TOTAL_TALISMANS = 8;
 let glowIntervals = {};
@@ -18,31 +18,27 @@ const ARTIFACTS = {
     sheep: { name: "Sheep", power: "Astral Projection", color: 0x9999ff, markerId: "marker-sheep", entityId: "entity-sheep", quiz: { q: "Power of Sheep?", a: "Astral Projection", options: ["Healing", "Astral Projection", "Speed"] } }
 };
 
-// Ensure this goes AFTER your ARTIFACTS constant is defined
 function initializeMarkers() {
     Object.keys(ARTIFACTS).forEach(key => {
-        const artifact = ARTIFACTS[key];
-        const marker = document.getElementById(artifact.markerId);
+        const data = ARTIFACTS[key];
+        const marker = document.getElementById(data.markerId);
 
         if (marker) {
-            // Logic for when ANY of the 8 markers is seen
             marker.addEventListener('markerFound', () => {
-                currentArtifact = artifact;
-                activeEntity = document.getElementById(artifact.entityId);
+                currentArtifact = data; // Set to the whole object
+                activeEntity = document.getElementById(data.entityId);
                 
-                // This line pulls the unique color (0xff3300, 0x00ffcc, etc.) 
-                // from your list and "paints" the model
-                applyGlow(activeEntity, artifact.color, key);
+                // applyGlow paints the carving with data.color
+                applyGlow(activeEntity, data.color, key);
                 
-                // Updates the UI with the specific power (Immortality, Fire, etc.)
-                updatePowerBar(artifact.power);
-                console.log("Active Artifact:", artifact.name);
+                playScanSound();
+                registerCollection(key);
+                console.log("Active Artifact:", data.name);
             });
 
-            // Logic for when the camera loses the marker
             marker.addEventListener('markerLost', () => {
                 removeGlow(key);
-                if (currentArtifact && currentArtifact.markerId === artifact.markerId) {
+                if (currentArtifact && currentArtifact.markerId === data.markerId) {
                     currentArtifact = null;
                     activeEntity = null;
                 }
@@ -51,88 +47,58 @@ function initializeMarkers() {
     });
 }
 
-// Call this function inside your startGame() function
-function startGame() {
-    document.getElementById('start-screen').classList.add('hidden');
-    initializeMarkers(); // <--- This starts the 8-talisman detection
-}
-//function startGame() {
-    //document.getElementById("start-screen").style.display = "none";
-    // Mobile browsers require a user gesture to play audio/speech
-    //const video = document.querySelector('video');
-    //if (video) { video.play(); }
-    
-    //speak("System Initialized. Scan a talisman.");
-//}
-
 function startGame() {
     const startScreen = document.getElementById("start-screen");
     startScreen.style.opacity = "0";
     setTimeout(() => { 
         startScreen.style.display = "none"; 
-    }, 500); // Fades out then removes
+    }, 500);
 
     const video = document.querySelector('video');
     if (video) {
-        video.style.display = "block"; // Force visibility
+        video.style.display = "block";
         video.play();
     }
+    
     initializeMarkers();
     speak("System Online. Welcome to Zodiac AR");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    Object.keys(ARTIFACTS).forEach(key => {
-        const data = ARTIFACTS[key];
-        const marker = document.getElementById(data.markerId);
-        
-        marker.addEventListener("markerFound", () => {
-            currentArtifact = key;
-            const entity = document.getElementById(data.entityId);
-            activeEntity = entity;
-            applyGlow(entity, data.color, key);
-            playScanSound();
-            registerCollection(key);
-        });
-
-        marker.addEventListener("markerLost", () => {
-            removeGlow(key);
-            if(currentArtifact === key) currentArtifact = null;
-        });
-    });
-});
-
-function registerCollection(key) {
-    if (!collected.has(key)) {
-        collected.add(key);
-        const percent = (collected.size / TOTAL_TALISMANS) * 100;
-        document.getElementById("power-fill").style.height = percent + "%";
-        if (collected.size === TOTAL_TALISMANS) gameSuccess();
-    }
-}
-
-function applyGlow(entity, color, key) {
+function applyGlow(entity, colorCode, key) {
     if (!entity || !entity.object3D) return;
     removeGlow(key);
+
     entity.object3D.traverse(mesh => {
         if (mesh.isMesh) {
-            mesh.material.emissive = new THREE.Color(color);
-            mesh.material.emissiveIntensity = 0.1; // Keep it low to see the stone detail
+            // FIX: Set stone to Grey, Carving to the Color Code
+            mesh.material.color = new THREE.Color(0x666666); 
+            mesh.material.emissive = new THREE.Color(colorCode);
+            mesh.material.emissiveIntensity = 0.2;
             mesh.material.needsUpdate = true;
+
             let up = true;
             glowIntervals[key] = setInterval(() => {
-                //mesh.material.emissiveIntensity = (mesh.material.emissiveIntensity || 0.5) + (up ? 0.05 : -0.05);
-                //if (mesh.material.emissiveIntensity >= 1.5) up = false;
-                //if (mesh.material.emissiveIntensity <= 0.5) up = true;
                 let intensity = mesh.material.emissiveIntensity;
                 intensity = up ? intensity + 0.01 : intensity - 0.01;
-                if (intensity >= 0.3) up = false;
-                if (intensity <= 0.05) up = true;
+                if (intensity >= 0.5) up = false;
+                if (intensity <= 0.1) up = true;
                 mesh.material.emissiveIntensity = intensity;
             }, 100);
         }
     });
 }
+
+function registerCollection(key) {
+    if (!collected.has(key)) {
+        collected.add(key);
+        const percent = (collected.size / TOTAL_TALISMANS) * 100;
+        const fill = document.getElementById("power-fill");
+        if (fill) fill.style.height = percent + "%";
+        if (collected.size === TOTAL_TALISMANS) gameSuccess();
+    }
+}
+
+// ... Keep your sound, removeGlow, quiz, and button functions exactly as they are ...
 
 function removeGlow(key) {
     if (glowIntervals[key]) { clearInterval(glowIntervals[key]); delete glowIntervals[key]; }
