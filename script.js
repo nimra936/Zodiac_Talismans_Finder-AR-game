@@ -18,6 +18,44 @@ const ARTIFACTS = {
     sheep: { name: "Sheep", power: "Astral Projection", color: 0x9999ff, markerId: "marker-sheep", entityId: "entity-sheep", quiz: { q: "Power of Sheep?", a: "Astral Projection", options: ["Healing", "Astral Projection", "Speed"] } }
 };
 
+// Ensure this goes AFTER your ARTIFACTS constant is defined
+function initializeMarkers() {
+    Object.keys(ARTIFACTS).forEach(key => {
+        const artifact = ARTIFACTS[key];
+        const marker = document.getElementById(artifact.markerId);
+
+        if (marker) {
+            // Logic for when ANY of the 8 markers is seen
+            marker.addEventListener('markerFound', () => {
+                currentArtifact = artifact;
+                activeEntity = document.getElementById(artifact.entityId);
+                
+                // This line pulls the unique color (0xff3300, 0x00ffcc, etc.) 
+                // from your list and "paints" the model
+                applyGlow(activeEntity, artifact.color, key);
+                
+                // Updates the UI with the specific power (Immortality, Fire, etc.)
+                updatePowerBar(artifact.power);
+                console.log("Active Artifact:", artifact.name);
+            });
+
+            // Logic for when the camera loses the marker
+            marker.addEventListener('markerLost', () => {
+                removeGlow(key);
+                if (currentArtifact && currentArtifact.markerId === artifact.markerId) {
+                    currentArtifact = null;
+                    activeEntity = null;
+                }
+            });
+        }
+    });
+}
+
+// Call this function inside your startGame() function
+function startGame() {
+    document.getElementById('start-screen').classList.add('hidden');
+    initializeMarkers(); // <--- This starts the 8-talisman detection
+}
 //function startGame() {
     //document.getElementById("start-screen").style.display = "none";
     // Mobile browsers require a user gesture to play audio/speech
@@ -39,7 +77,8 @@ function startGame() {
         video.style.display = "block"; // Force visibility
         video.play();
     }
-    speak("System Online.");
+    initializeMarkers();
+    speak("System Online. Welcome to Zodiac AR");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
