@@ -114,22 +114,30 @@ function registerCollection(key) {
 function applyGlow(entity, color, key) {
     if (!entity || !entity.object3D) return;
     removeGlow(key);
+
     entity.object3D.traverse(mesh => {
         if (mesh.isMesh) {
+            // 1. Apply the specific color from your ARTIFACTS list
             mesh.material.emissive = new THREE.Color(color);
-            mesh.material.emissiveIntensity = 0.1; // Keep it low to see the stone detail
+            
+            // 2. Increase base intensity so the color is actually visible
+            mesh.material.emissiveIntensity = 0.5; 
+            
             mesh.material.needsUpdate = true;
+
             let up = true;
             glowIntervals[key] = setInterval(() => {
-                //mesh.material.emissiveIntensity = (mesh.material.emissiveIntensity || 0.5) + (up ? 0.05 : -0.05);
-                //if (mesh.material.emissiveIntensity >= 1.5) up = false;
-                //if (mesh.material.emissiveIntensity <= 0.5) up = true;
                 let intensity = mesh.material.emissiveIntensity;
-                intensity = up ? intensity + 0.01 : intensity - 0.01;
-                if (intensity >= 0.3) up = false;
-                if (intensity <= 0.05) up = true;
+                
+                // 3. Pulse the color intensity to make the carving look "alive"
+                intensity = up ? intensity + 0.02 : intensity - 0.02;
+                
+                // 4. Set the limits: 0.8 is bright color, 0.2 is faint color
+                if (intensity >= 0.8) up = false;
+                if (intensity <= 0.2) up = true;
+                
                 mesh.material.emissiveIntensity = intensity;
-            }, 100);
+            }, 80); // Slightly faster pulse for better effect
         }
     });
 }
