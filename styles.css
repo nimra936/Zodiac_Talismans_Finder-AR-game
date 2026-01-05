@@ -1,0 +1,119 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #000;
+}
+
+/* START SCREEN */
+#start-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #1a1a2e, #000);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  text-align: center;
+}
+
+#start-screen button {
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  background: gold;
+  color: #000;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  cursor: pointer;
+}
+
+/* POWER BAR */
+#power-bar {
+  position: fixed;
+  left: 15px;
+  top: 15%;
+  width: 12px;
+  height: 70%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  z-index: 100;
+}
+
+#power-fill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(to top, #ffd700, #ff4500);
+  border-radius: 10px;
+  transition: height 0.5s ease-out;
+}
+
+/* CONTROL PANEL (BIGGER BUTTONS) */
+.control-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 100;
+}
+
+.main-btn {
+  width: 70px; /* Increased Size */
+  height: 70px; /* Increased Size */
+  border-radius: 50%;
+  border: 3px solid gold;
+  font-size: 28px;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.main-btn:active {
+  transform: scale(0.9);
+}
+
+/* QUIZ */
+#quiz-container {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.quiz-box {
+  background: #1a1a1a;
+  padding: 30px;
+  border: 2px solid gold;
+  border-radius: 20px;
+  color: #fff;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.quiz-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  background: #333;
+  color: #fff;
+}
+
+.hidden { display: none !important; }
