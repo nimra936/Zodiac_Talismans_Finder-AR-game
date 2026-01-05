@@ -51,11 +51,6 @@ function initializeMarkers() {
     });
 }
 
-// Call this function inside your startGame() function
-function startGame() {
-    document.getElementById('start-screen').classList.add('hidden');
-    initializeMarkers(); // <--- This starts the 8-talisman detection
-}
 //function startGame() {
     //document.getElementById("start-screen").style.display = "none";
     // Mobile browsers require a user gesture to play audio/speech
