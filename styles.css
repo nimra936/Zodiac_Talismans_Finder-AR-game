@@ -62,7 +62,9 @@ html, body {
   flex-direction: column;
   gap: 15px;
   z-index: 100;
+  pointer-events: none;
 }
+
 
 .main-btn {
   width: 70px; /* Increased Size */
@@ -77,6 +79,8 @@ html, body {
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
+  pointer-events: auto; 
+  position: relative;
 }
 
 .main-btn:active {
