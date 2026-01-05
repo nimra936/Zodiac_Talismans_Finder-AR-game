@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zodiac Magic Experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body style="margin: 0; overflow: hidden;">
+
+<div id="start-screen">
+  <h1>🧿 Zodiac Magic</h1>
+  <p>Find all Zodiac Talismans</p>
+  <button onclick="startGame()">START EXPERIENCE</button>
+</div>
+
+<div id="power-bar">
+  <div id="power-fill"></div>
+</div>
+
+<div class="control-panel">
+  <button class="main-btn" onclick="triggerVoiceInfo()" title="Info">ℹ️</button>
+  <button class="main-btn" onclick="startQuiz()" title="Quiz">❓</button>
+  <button class="main-btn" onclick="location.reload()" title="Reset">🔄</button>
+  <button class="main-btn" id="glow-toggle" title="Magic">✨</button>
+</div>
+
+<div id="quiz-container" class="hidden">
+  <div class="quiz-box">
+    <h3 id="quiz-question"></h3>
+    <div id="quiz-options"></div>
+  </div>
+</div>
+
+<a-scene
+  embedded
+  arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+  vr-mode-ui="enabled: false"
+  renderer="logarithmicDepthBuffer: true; antialias: true; alpha: true;">
+
+  <a-entity light="type: ambient; intensity: 1.5"></a-entity>
+  <a-entity light="type: directional; intensity: 0.8; position: 1 1 1"></a-entity>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-dog.patt" id="marker-dog" emitevents="true">
+    <a-entity id="entity-dog" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/dog.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-dragon.patt" id="marker-dragon" emitevents="true">
+    <a-entity id="entity-dragon" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/dragon.glb)" scale="0.35 0.35 0.35"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-horse.patt" id="marker-horse" emitevents="true">
+    <a-entity id="entity-horse" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/horse.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-monkey.patt" id="marker-monkey" emitevents="true">
+    <a-entity id="entity-monkey" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/monkey.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-rabbit.patt" id="marker-rabbit" emitevents="true">
+    <a-entity id="entity-rabbit" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/rabbit.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-rat.patt" id="marker-rat" emitevents="true">
+    <a-entity id="entity-rat" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/rat.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-rooster.patt" id="marker-rooster" emitevents="true">
+    <a-entity id="entity-rooster" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/rooster.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-marker type="pattern" url="zodiac_patt/pattern-sheep.patt" id="marker-sheep" emitevents="true">
+    <a-entity id="entity-sheep" gltf-model="url(https://raw.githack.com/nimra936/Zodiac_Talismans_Finder-AR-game/main/talismans3D/sheep.glb)" scale="0.4 0.4 0.4"></a-entity>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
+<script src="script.js"></script>
+</body>
+</html>
