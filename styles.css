@@ -3,7 +3,7 @@ html, body {
   padding: 0;
   overflow: hidden;
   font-family: 'Segoe UI', Roboto, sans-serif;
-  background: #000;
+  background: transparent !important; /* Change #000 to transparent */
 }
 
 /* START SCREEN */
